@@ -10,8 +10,9 @@ let socket
 let caller
 let callee
 
-export const connectWithWebSocket = () => {
+export const connectWithWebSocket = async () => {
   socket = socketClient(SERVER)
+  console.log(socket)
 
   socket.on('connection', () => {
     console.log('succesfully connected with wss server')
@@ -19,37 +20,40 @@ export const connectWithWebSocket = () => {
   })
 
   socket.on('new-user-joined', (data) => {
+    console.log('new user joined')
+    console.log(data)
     callee = data.socketId
     socket.emit('new-user-start', { to: data.socketId, sender: socket.id })
     webRTCHandler.getLocalStream(callee, false)
   })
 
-  socket.on('new-user-start', (data) => {
+  socket.on('new-user-start', async (data) => {
+    console.log('new user start')
     caller = data.sender
-    webRTCHandler.getLocalStream(caller, true)
+    await webRTCHandler.getLocalStream(caller, true)
   })
 
-  socket.on('webRTC-offer', (data) => {
-    webRTCHandler.handleOffer(data)
+  socket.on('webRTC-offer', async (data) => {
+    await webRTCHandler.handleOffer(data)
   })
 
-  socket.on('webRTC-answer', (data) => {
-    webRTCHandler.handleAnswer(data)
+  socket.on('webRTC-answer', async (data) => {
+    await webRTCHandler.handleAnswer(data)
   })
 
-  socket.on('webRTC-candidate', (data) => {
-    webRTCHandler.handleCandidate(data)
+  socket.on('webRTC-candidate', async (data) => {
+    await webRTCHandler.handleCandidate(data)
   })
 }
 
-export const registerNewUser = (room) => {
+export const registerNewUser = async (room) => {
   store.dispatch(setLocalPeerConnId(socket.id))
   socket.emit('join-room', {
     roomID: room,
     socketId: socket.id
   })
 
-  webRTCHandler.getLocalStream(socket.id)
+  await webRTCHandler.getLocalStream(socket.id)
 }
 
 export const sendWebRTCOffer = (data) => {
