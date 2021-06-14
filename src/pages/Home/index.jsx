@@ -3,7 +3,7 @@ import { useRouteMatch } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
 
-import { registerNewUser } from '../../ws/wssConnection'
+import { connectWithWebSocket, registerNewUser } from '../../ws/wssConnection'
 
 import Layout from '../_layout'
 import Modal from '../../components/Modal'
@@ -21,6 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     if (roomId) {
+      connectWithWebSocket()
       registerNewUser(roomId)
     }
   }, [roomId])
