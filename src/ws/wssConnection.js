@@ -45,7 +45,6 @@ export const connectWithWebSocket = () => {
 export const registerNewUser = (room) => {
   store.dispatch(setLocalPeerConnId(socket.id))
   socket.emit('join-room', {
-    // username: username,
     roomID: room,
     socketId: socket.id
   })

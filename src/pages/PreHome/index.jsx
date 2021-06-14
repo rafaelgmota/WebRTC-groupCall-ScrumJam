@@ -24,19 +24,13 @@ const PreHome = ({ route }) => {
 
     dispatch(setRoomCodeState(roomCode))
 
-    history.push({
-      pathname: '/home',
-      state: roomCode
-    })
+    history.push(`/${roomCode}`)
   }
 
   const createRoom = () => {
     const id = generateRandomString()[0].toString()
     dispatch(setRoomCodeState(id))
-    history.push({
-      pathname: '/home',
-      state: id
-    })
+    history.push(`/${id}`)
   }
 
   return (
