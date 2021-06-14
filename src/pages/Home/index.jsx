@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
 
@@ -15,20 +15,15 @@ import RemoteUserCard from '../../components/RemoteUserCard'
 
 export default function Home() {
   const [show, setShow] = useState(false)
+  const { params: { roomId } } = useRouteMatch()
 
-  const history = useHistory()
-  const { location } = history
   const state = useSelector((state) => state.call)
 
   useEffect(() => {
-    console.log(history)
-    const room = location.state
-    if (!room) {
-      history.push('/')
-      return
+    if (roomId) {
+      registerNewUser(roomId)
     }
-    registerNewUser(room)
-  }, [])
+  }, [roomId])
 
   async function handleInit() {
     setShow(false)
