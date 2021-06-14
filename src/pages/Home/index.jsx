@@ -20,10 +20,13 @@ export default function Home() {
   const state = useSelector((state) => state.call)
 
   useEffect(() => {
-    if (roomId) {
-      connectWithWebSocket()
-      registerNewUser(roomId)
-    }
+    (async () => {
+      if (roomId) {
+        console.log(roomId)
+        await connectWithWebSocket()
+        setTimeout(async () => await registerNewUser(roomId), 5000)
+      }
+    })()
   }, [roomId])
 
   async function handleInit() {

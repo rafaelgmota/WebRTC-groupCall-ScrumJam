@@ -23,30 +23,23 @@ const configuration = {
 
 const peerConnection = []
 
-export const getLocalStream = (peerConn, sendOffer) => {
-  navigator.getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia ||
-    navigator.oGetUserMedia
-  navigator.mediaDevices
-    .getUserMedia(defaultConstrains)
-    .then((stream) => {
-      store.dispatch(setLocalStream(stream))
-      createPeerConnection(peerConn, sendOffer)
-    })
-    .catch((err) => {
-      console.log(
-        'error occured when trying to get an access to get local stream'
-      )
-      console.log(err)
-    })
+export const getLocalStream = async (peerConn, sendOffer) => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(defaultConstrains)
+    store.dispatch(setLocalStream(stream))
+    await createPeerConnection(peerConn, sendOffer)
+  } catch (err) {
+    console.log(
+      'error occured when trying to get an access to get local stream'
+    )
+    console.log(err)
+  }
 }
 
-const createPeerConnection = (peerConn, sendOffer) => {
+const createPeerConnection = async (peerConn, sendOffer) => {
   console.log('Start creating peer')
   // peerConnection.push(peerConn)
+  console.log(peerConn)
   peerConnection[peerConn] = new RTCPeerConnection(configuration)
 
   const localStream = store.getState().call.localStream
@@ -92,7 +85,7 @@ const createPeerConnection = (peerConn, sendOffer) => {
   console.log('PEER CONN ARR', peerConnection)
 
   if (sendOffer) {
-    sendWebRTCOffer(peerConn)
+    await sendWebRTCOffer(peerConn)
   }
 }
 
