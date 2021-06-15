@@ -50,7 +50,7 @@ export const registerNewUser = (room) => {
     socketId: socket.id
   })
 
-  webRTCHandler.getLocalStream(socket.id)
+  // webRTCHandler.getLocalStream(socket.id)
 }
 
 export const sendWebRTCOffer = (data) => {
