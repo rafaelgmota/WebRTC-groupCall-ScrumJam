@@ -4,7 +4,6 @@ import { setLocalPeerConnId } from '../redux/actions/callActions'
 import * as webRTCHandler from '../webRTC/webRTCHandler'
 
 const SERVER = 'https://webrtcdaviteste.herokuapp.com/'
-// const SERVER = 'http://localhost:com/'
 
 let socket
 let caller
