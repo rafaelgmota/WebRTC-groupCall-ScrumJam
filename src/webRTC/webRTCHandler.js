@@ -37,9 +37,6 @@ export const getLocalStream = (peerConn, sendOffer) => {
       createPeerConnection(peerConn, sendOffer)
     })
     .catch((err) => {
-      console.log(
-        'error occured when trying to get an access to get local stream'
-      )
       console.log(err)
     })
 }
